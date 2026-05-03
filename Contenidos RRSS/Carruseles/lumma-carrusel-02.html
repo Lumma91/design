@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumma — Carrusel 02 · Cómo grabar contenido</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #CCFF00;
+    --pink: #E6007E;
+    --black: #080808;
+    --warm: #1C1A18;
+    --dim: #444444;
+    --gray: #777777;
+    --text-light: #D4D0CA;
+    --white: #FFFFFF;
+    --cream: #F5F0E8;
+    --rose: #FF7EB3;
+    --surface: #111111;
+  }
+
+  body {
+    background: #0a0a0a;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 48px 24px 80px;
+  }
+
+  .page-header {
+    text-align: center; margin-bottom: 16px;
+  }
+  .page-header h1 {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px;
+    color: var(--green); margin-bottom: 6px;
+  }
+  .page-header p { font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+
+  .meta-row {
+    display: flex; justify-content: center; gap: 24px;
+    margin-bottom: 48px; flex-wrap: wrap;
+  }
+  .meta-item {
+    font-size: 9px; color: var(--dim); letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .meta-item span { color: var(--gray); }
+
+  .slides-grid {
+    display: flex; gap: 14px;
+    justify-content: center; flex-wrap: wrap;
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  .slide-wrap {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+
+  .slide-label {
+    font-size: 8px; font-weight: 700; letter-spacing: 2px; color: var(--dim);
+  }
+  .slide-label em { color: var(--pink); font-style: normal; }
+
+  /* 4:5 at 220×275px */
+  .slide {
+    width: 220px; height: 275px;
+    position: relative; overflow: hidden;
+    background: var(--cream);
+    flex-shrink: 0; border-radius: 2px;
+  }
+
+  /* Texture layer */
+  .tex {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    opacity: 0.6; pointer-events: none; z-index: 1;
+  }
+
+  /* Bottom gradient band */
+  .band {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--pink) 100%);
+    z-index: 4;
+  }
+
+  /* Content */
+  .content {
+    position: relative; z-index: 2;
+    padding: 22px 22px 20px 22px;
+    height: 100%;
+    display: flex; flex-direction: column;
+  }
+
+  .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .num {
+    font-size: 7.5px; color: #AAAAAA;
+    font-variant-numeric: tabular-nums; letter-spacing: 0.5px;
+  }
+
+  /* ════ SLIDE 1 — COVER ════ */
+
+  /* Geometric corner accent */
+  .s1 .geo-pink {
+    position: absolute; top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 72px 72px 0;
+    border-color: transparent var(--pink) transparent transparent;
+    z-index: 3;
+  }
+  .s1 .geo-green {
+    position: absolute; top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 48px 48px 0;
+    border-color: transparent var(--green) transparent transparent;
+    z-index: 4;
+  }
+
+  .s1 .content { justify-content: space-between; }
+
+  .s1 .cat-tag {
+    font-size: 7px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--pink);
+    border-bottom: 1.5px solid var(--pink);
+    padding-bottom: 3px; text-transform: uppercase;
+  }
+
+  .s1 .badge {
+    display: inline-flex; align-items: center;
+    background: var(--warm); color: var(--green);
+    font-size: 7px; font-weight: 800; letter-spacing: 1.5px;
+    padding: 4px 8px; border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .s1 .middle {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 12px 0 6px;
+  }
+
+  .s1 h2 {
+    font-size: 23px; font-weight: 800;
+    line-height: 1.05; letter-spacing: -0.6px;
+    color: var(--warm); margin-bottom: 10px;
+  }
+
+  .s1 h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--pink);
+  }
+
+  .s1 .sub {
+    font-size: 9px; font-weight: 500;
+    color: #888; line-height: 1.55;
+  }
+
+  .s1 .bottom-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+
+  .swipe {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 7px; font-weight: 600; letter-spacing: 1.5px; color: #BBBBBB;
+  }
+  .swipe-line {
+    width: 16px; height: 1px; background: var(--pink); position: relative;
+  }
+  .swipe-line::after {
+    content: '';
+    position: absolute; right: 0; top: -2.5px;
+    width: 4.5px; height: 4.5px;
+    border-top: 1px solid var(--pink);
+    border-right: 1px solid var(--pink);
+    transform: rotate(45deg);
+  }
+
+  .logo-sig {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .logo-sig span {
+    font-size: 7px; font-weight: 700; letter-spacing: 2px; color: #AAAAAA;
+  }
+
+  /* ════ SLIDES 2–5 — INTERIOR ════ */
+
+  .inner .top-row { margin-bottom: 15px; }
+
+  .step-pill {
+    font-size: 7px; font-weight: 800; letter-spacing: 1.5px;
+    color: var(--green);
+    background: var(--warm);
+    padding: 3px 8px; border-radius: 20px;
+  }
+
+  /* Large decorative number */
+  .inner .bg-num {
+    position: absolute;
+    bottom: 44px; right: 14px;
+    font-size: 64px; font-weight: 800;
+    line-height: 1; letter-spacing: -4px;
+    color: rgba(230,0,126,0.06);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none; z-index: 1;
+  }
+
+  .inner h3 {
+    font-size: 17px; font-weight: 800;
+    line-height: 1.12; letter-spacing: -0.3px;
+    color: var(--warm); margin-bottom: 11px;
+    position: relative; z-index: 2;
+  }
+
+  .inner h3 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--pink);
+  }
+
+  .inner .body {
+    font-size: 9.5px; font-weight: 500;
+    color: #555; line-height: 1.65;
+    flex: 1; position: relative; z-index: 2;
+  }
+
+  .inner .insight {
+    background: var(--warm);
+    padding: 9px 11px; border-radius: 7px;
+    margin-top: 11px; position: relative; z-index: 2;
+  }
+
+  .inner .insight p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 9px; color: var(--text-light); line-height: 1.5;
+  }
+
+  .inner .insight p strong {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-style: normal; font-size: 7.5px;
+    font-weight: 700; letter-spacing: 1px;
+    color: var(--green); display: block; margin-bottom: 3px;
+  }
+
+  .inner .bottom-sig {
+    margin-top: 11px;
+    display: flex; align-items: center; gap: 4px;
+    position: relative; z-index: 2;
+  }
+  .inner .bottom-sig span {
+    font-size: 7px; font-weight: 700; letter-spacing: 2px; color: #AAAAAA;
+  }
+
+  /* ════ SLIDE 6 — CTA ════ */
+  .s6 { background: var(--warm); }
+
+  .s6 .glow {
+    position: absolute; top: -30px; left: 50%;
+    transform: translateX(-50%);
+    width: 260px; height: 180px;
+    background: radial-gradient(ellipse, rgba(204,255,0,0.09) 0%, transparent 65%);
+    filter: blur(22px); z-index: 1; pointer-events: none;
+  }
+
+  .s6 .content {
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+
+  .s6 .iso { margin-bottom: 16px; z-index: 2; }
+
+  .s6 h2 {
+    font-size: 17px; font-weight: 800;
+    color: var(--white); line-height: 1.1;
+    letter-spacing: -0.3px; margin-bottom: 9px;
+    z-index: 2; position: relative;
+  }
+
+  .s6 h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green);
+  }
+
+  .s6 .sub {
+    font-size: 9px; color: var(--gray);
+    line-height: 1.6; margin-bottom: 16px;
+    max-width: 172px; z-index: 2; position: relative;
+  }
+
+  .s6 .btn {
+    background: transparent; color: var(--green);
+    font-size: 7.5px; font-weight: 800; letter-spacing: 2px;
+    padding: 7px 15px; border-radius: 2px;
+    border: 1px solid rgba(204,255,0,0.35);
+    display: inline-block; margin-bottom: 14px;
+    z-index: 2; position: relative;
+  }
+
+  .s6 .handle {
+    font-size: 7.5px; font-weight: 600;
+    color: var(--dim); letter-spacing: 1.5px;
+    z-index: 2; position: relative;
+  }
+
+  /* ── SPEC FOOTER ── */
+  .spec-footer {
+    margin-top: 52px;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 28px;
+    display: flex; gap: 32px;
+    justify-content: center; flex-wrap: wrap;
+    max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+
+  .spec-col { max-width: 220px; }
+  .spec-col strong {
+    display: block; font-size: 8px; font-weight: 700;
+    letter-spacing: 2px; color: var(--pink); margin-bottom: 8px;
+  }
+  .spec-col p { font-size: 9px; color: var(--dim); line-height: 1.7; }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>LUMMA · CARRUSEL 02 · MIÉRCOLES 14 MAYO</h1>
+  <p>Pilar CRAFT — Valor · 6 slides · Formato 4:5 · Versión crema</p>
+</div>
+
+<div class="meta-row">
+  <div class="meta-item">TEMA <span>Cómo prepararte para grabar contenido</span></div>
+  <div class="meta-item">FORMATO <span>Carrusel educativo</span></div>
+  <div class="meta-item">IDIOMA <span>Español</span></div>
+  <div class="meta-item">SLIDES <span>6</span></div>
+</div>
+
+<div class="slides-grid">
+
+  <!-- ── SLIDE 1: COVER ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>01</em> · PORTADA</span>
+    <div class="slide s1">
+      <div class="tex"></div>
+      <div class="geo-pink"></div>
+      <div class="geo-green"></div>
+      <div class="band"></div>
+      <div class="content">
+        <div class="top-row">
+          <span class="cat-tag">CRAFT</span>
+          <span class="num">1 / 6</span>
+        </div>
+        <div class="middle">
+          <span class="badge">GUÍA PRÁCTICA</span>
+          <h2>Quieres grabar<br>contenido y no<br>sabes por dónde<br><em>empezar.</em></h2>
+          <p class="sub">Esto te va a ayudar. Aunque nunca lo hayas hecho antes.</p>
+        </div>
+        <div class="bottom-row">
+          <div class="swipe">
+            <span>DESLIZA</span>
+            <div class="swipe-line"></div>
+          </div>
+          <div class="logo-sig">
+            <svg width="13" height="13" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 2 ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>02</em> · INTERIOR</span>
+    <div class="slide inner">
+      <div class="tex"></div>
+      <div class="band"></div>
+      <div class="bg-num">01</div>
+      <div class="content">
+        <div class="top-row">
+          <span class="step-pill">PASO 01</span>
+          <span class="num">2 / 6</span>
+        </div>
+        <h3>Empieza mostrando<br>tu <em>proceso</em></h3>
+        <p class="body">Tus manos trabajando, tu espacio, tu producto en acción. No necesitas aparecer en cámara. El proceso en sí ya es contenido que conecta — la gente quiere ver cómo se hace, no solo el resultado.</p>
+        <div class="insight">
+          <p><strong>RECUERDA</strong>Lo que para ti es cotidiano, para tu audiencia es fascinante. Muéstralo.</p>
+        </div>
+        <div class="bottom-sig">
+          <svg width="11" height="11" viewBox="0 0 32 32">
+            <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+            <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+            <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+          </svg>
+          <span>LUMMA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 3 ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>03</em> · INTERIOR</span>
+    <div class="slide inner">
+      <div class="tex"></div>
+      <div class="band"></div>
+      <div class="bg-num">02</div>
+      <div class="content">
+        <div class="top-row">
+          <span class="step-pill">PASO 02</span>
+          <span class="num">3 / 6</span>
+        </div>
+        <h3>Escribe una idea<br>antes de <em>grabar</em></h3>
+        <p class="body">Un mensaje claro de una línea. Eso es suficiente. No necesitas un guión completo — solo saber qué quieres que se lleve quien lo vea. Una idea clara > un video largo sin dirección.</p>
+        <div class="insight">
+          <p><strong>PRUEBA ESTO</strong>Completa esta frase: "Quiero que quien vea esto sienta / sepa / haga ___."</p>
+        </div>
+        <div class="bottom-sig">
+          <svg width="11" height="11" viewBox="0 0 32 32">
+            <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+            <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+            <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+          </svg>
+          <span>LUMMA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 4 ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>04</em> · INTERIOR</span>
+    <div class="slide inner">
+      <div class="tex"></div>
+      <div class="band"></div>
+      <div class="bg-num">03</div>
+      <div class="content">
+        <div class="top-row">
+          <span class="step-pill">PASO 03</span>
+          <span class="num">4 / 6</span>
+        </div>
+        <h3>15 segundos<br>es <em>más</em> que<br>2 minutos</h3>
+        <p class="body">Un mensaje corto y claro tiene más impacto que un video largo sin dirección. La atención es el recurso más escaso. Respétala — di lo esencial y para.</p>
+        <div class="insight">
+          <p><strong>LA REGLA</strong>Si puedes decirlo en 15 segundos, no lo digas en 60. La claridad es una forma de respeto.</p>
+        </div>
+        <div class="bottom-sig">
+          <svg width="11" height="11" viewBox="0 0 32 32">
+            <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+            <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+            <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+          </svg>
+          <span>LUMMA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 5 ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>05</em> · INTERIOR</span>
+    <div class="slide inner">
+      <div class="tex"></div>
+      <div class="band"></div>
+      <div class="bg-num">04</div>
+      <div class="content">
+        <div class="top-row">
+          <span class="step-pill">PASO 04</span>
+          <span class="num">5 / 6</span>
+        </div>
+        <h3>La primera vez<br>es la más <em>difícil.</em><br>Solo esa.</h3>
+        <p class="body">Después de esa, cada vez fluye más. Todos empezamos desde cero — sin audiencia, sin confianza, sin saber si funcionaría. La diferencia está en haber empezado.</p>
+        <div class="insight">
+          <p><strong>ESTO ES VERDAD</strong>El primer video no tiene que ser perfecto. Tiene que existir.</p>
+        </div>
+        <div class="bottom-sig">
+          <svg width="11" height="11" viewBox="0 0 32 32">
+            <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+            <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+            <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+          </svg>
+          <span>LUMMA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 6: CTA ── -->
+  <div class="slide-wrap">
+    <span class="slide-label"><em>06</em> · CIERRE</span>
+    <div class="slide s6">
+      <div class="glow"></div>
+      <div class="band"></div>
+      <div class="content">
+        <div class="iso">
+          <svg width="46" height="28" viewBox="0 0 46 28">
+            <circle cx="14" cy="14" r="13" fill="#CCFF00"/>
+            <circle cx="32" cy="14" r="13" fill="#E6007E"/>
+            <circle cx="23" cy="14" r="5.5" fill="#1C1A18"/>
+          </svg>
+        </div>
+        <h2>Y cuando estés<br>listo para el<br>siguiente <em>nivel,</em><br>aquí estamos.</h2>
+        <p class="sub">Contenido profesional, con estrategia y con tu voz de marca. Todo resuelto.</p>
+        <span class="btn">LINK EN BIO →</span>
+        <span class="handle">@lummastudio_</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SPEC FOOTER -->
+<div class="spec-footer">
+  <div class="spec-col">
+    <strong>COPY — NOTAS</strong>
+    <p>Los insights en cada slide expanden el mensaje del calendario con una línea de remate accionable. Pueden ajustarse o simplificarse según criterio.</p>
+  </div>
+  <div class="spec-col">
+    <strong>PRODUCCIÓN</strong>
+    <p>Exportar cada slide a 1080 × 1350 px. Fondo: #F5F0E8 (crema). Cierre: #1C1A18 (warm dark). Tipografía: Plus Jakarta Sans 800 + Instrument Serif Italic.</p>
+  </div>
+  <div class="spec-col">
+    <strong>PUBLICACIÓN</strong>
+    <p>Miércoles 14 de mayo. Pilar CRAFT. Tono cercano y motivador. Caption en primera persona, sin formalidad excesiva.</p>
+  </div>
+</div>
+
+</body>
+</html>

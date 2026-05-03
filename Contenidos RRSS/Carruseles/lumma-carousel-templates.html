@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumma — Carousel Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #CCFF00;
+    --pink: #E6007E;
+    --black: #080808;
+    --surface: #111111;
+    --card: #161616;
+    --dim: #444444;
+    --gray: #777777;
+    --text-light: #D4D0CA;
+    --white: #FFFFFF;
+    --cream: #F5F0E8;
+    --warm: #1C1A18;
+    --rose: #FF7EB3;
+  }
+
+  body {
+    background: #0f0f0f;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .page-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .version-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .version-label span {
+    color: var(--green);
+  }
+
+  .section-block {
+    margin-bottom: 64px;
+  }
+
+  .slides-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .slide-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slide-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--dim);
+  }
+
+  /* ── SLIDE BASE ── */
+  /* Instagram ratio 1:1 shown at 280px */
+  .slide {
+    width: 280px;
+    height: 280px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ════════════════════════════════════
+     VERSION OSCURA — NEGRO
+  ════════════════════════════════════ */
+
+  /* PORTADA OSCURA */
+  .dark-cover {
+    background: var(--black);
+  }
+
+  .dark-cover .noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .dark-cover .glow-tl {
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(204,255,0,0.14) 0%, transparent 65%);
+    filter: blur(20px);
+  }
+
+  .dark-cover .glow-br {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, rgba(230,0,126,0.10) 0%, transparent 65%);
+    filter: blur(18px);
+  }
+
+  .dark-cover .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .dark-cover .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dark-cover .category-tag {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--green);
+    background: rgba(204,255,0,0.08);
+    border: 1px solid rgba(204,255,0,0.2);
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+
+  .dark-cover .slide-num {
+    font-size: 8px;
+    font-weight: 500;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dark-cover .headline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  .dark-cover .headline h2 {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .dark-cover .headline h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-cover .headline .sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--gray);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .dark-cover .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .dark-cover .swipe-hint {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .dark-cover .swipe-hint .arrow {
+    width: 16px;
+    height: 1px;
+    background: var(--green);
+    position: relative;
+  }
+  .dark-cover .swipe-hint .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2.5px;
+    width: 5px;
+    height: 5px;
+    border-top: 1px solid var(--green);
+    border-right: 1px solid var(--green);
+    transform: rotate(45deg);
+  }
+
+  .dark-cover .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .dark-cover .logo-mark .iso {
+    width: 16px;
+    height: 16px;
+  }
+  .dark-cover .logo-mark span {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gray);
+  }
+
+  /* GREEN ACCENT LINE on left edge */
+  .dark-cover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--green), transparent);
+    z-index: 3;
+  }
+
+  /* ── SLIDE INTERIOR OSCURO ── */
+  .dark-inner {
+    background: var(--black);
+  }
+
+  .dark-inner .noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .dark-inner .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .dark-inner .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .dark-inner .step-num {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 1px;
+  }
+
+  .dark-inner .slide-num {
+    font-size: 8px;
+    color: var(--dim);
+  }
+
+  .dark-inner .tip-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--green);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .dark-inner .tip-title {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .dark-inner .tip-title em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-inner .tip-body {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--text-light);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .dark-inner .card-block {
+    background: var(--surface);
+    border-left: 2px solid var(--green);
+    padding: 10px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 12px;
+  }
+
+  .dark-inner .card-block p {
+    font-size: 9px;
+    color: var(--green);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.5;
+    font-family: 'Instrument Serif', serif;
+  }
+
+  .dark-inner .bottom-logo {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .dark-inner .bottom-logo span {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--dim);
+  }
+
+  /* ── SLIDE CIERRE OSCURO ── */
+  .dark-close {
+    background: var(--black);
+  }
+
+  .dark-close .glow-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(204,255,0,0.08) 0%, rgba(230,0,126,0.05) 40%, transparent 70%);
+    filter: blur(24px);
+  }
+
+  .dark-close .noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .dark-close .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+  }
+
+  .dark-close .isotipo {
+    margin-bottom: 16px;
+  }
+
+  .dark-close .cta-headline {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+
+  .dark-close .cta-headline em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-close .cta-sub {
+    font-size: 9px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 200px;
+  }
+
+  .dark-close .cta-btn {
+    background: var(--green);
+    color: var(--black);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  .dark-close .handle {
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--dim);
+    letter-spacing: 1.5px;
+  }
+
+  .dark-close::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--pink), transparent);
+    z-index: 3;
+  }
+
+
+  /* ════════════════════════════════════
+     VERSION CREMA
+  ════════════════════════════════════ */
+
+  /* PORTADA CREMA */
+  .cream-cover {
+    background: var(--cream);
+  }
+
+  .cream-cover .texture {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+
+  /* Pink accent top right corner */
+  .cream-cover .corner-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: var(--pink);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    opacity: 0.9;
+  }
+
+  .cream-cover .corner-accent-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: var(--green);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    opacity: 1;
+  }
+
+  .cream-cover .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cream-cover .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .cream-cover .category-tag {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--pink);
+    text-transform: uppercase;
+    border-bottom: 1.5px solid var(--pink);
+    padding-bottom: 3px;
+  }
+
+  .cream-cover .slide-num {
+    font-size: 8px;
+    color: #AAAAAA;
+    margin-top: 4px;
+  }
+
+  .cream-cover .headline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 0;
+  }
+
+  .cream-cover .headline h2 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.0;
+    color: var(--warm);
+    letter-spacing: -0.8px;
+  }
+
+  .cream-cover .headline h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--pink);
+  }
+
+  .cream-cover .highlight-box {
+    display: inline-block;
+    background: var(--green);
+    color: var(--black);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    margin-top: 8px;
+    border-radius: 2px;
+  }
+
+  .cream-cover .sub {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: #888;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .cream-cover .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cream-cover .swipe-hint {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 8px;
+    font-weight: 600;
+    color: #AAAAAA;
+    letter-spacing: 1px;
+  }
+
+  .cream-cover .swipe-arrow {
+    width: 16px;
+    height: 1px;
+    background: var(--pink);
+    position: relative;
+  }
+  .cream-cover .swipe-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2.5px;
+    width: 5px;
+    height: 5px;
+    border-top: 1px solid var(--pink);
+    border-right: 1px solid var(--pink);
+    transform: rotate(45deg);
+  }
+
+  .cream-cover .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cream-cover .logo-mark span {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #AAAAAA;
+  }
+
+  /* ── SLIDE INTERIOR CREMA ── */
+  .cream-inner {
+    background: var(--cream);
+  }
+
+  .cream-inner .texture {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+
+  .cream-inner .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cream-inner .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .cream-inner .step-pill {
+    background: var(--warm);
+    color: var(--green);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .cream-inner .slide-num {
+    font-size: 8px;
+    color: #AAAAAA;
+  }
+
+  .cream-inner .tip-title {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--warm);
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .cream-inner .tip-title em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--pink);
+  }
+
+  .cream-inner .tip-body {
+    font-size: 9.5px;
+    font-weight: 500;
+    color: #555;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .cream-inner .card-block {
+    background: var(--warm);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+  }
+
+  .cream-inner .card-block p {
+    font-size: 9px;
+    color: var(--text-light);
+    font-weight: 500;
+    line-height: 1.5;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+  }
+
+  .cream-inner .card-block p span {
+    color: var(--green);
+  }
+
+  .cream-inner .bottom-logo {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cream-inner .bottom-logo span {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #AAAAAA;
+  }
+
+  /* ── SLIDE CIERRE CREMA ── */
+  .cream-close {
+    background: var(--warm);
+  }
+
+  .cream-close .glow-top {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 150px;
+    background: radial-gradient(ellipse, rgba(204,255,0,0.12) 0%, transparent 70%);
+    filter: blur(20px);
+  }
+
+  .cream-close .content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cream-close .isotipo {
+    margin-bottom: 14px;
+  }
+
+  .cream-close .cta-headline {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+
+  .cream-close .cta-headline em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--green);
+  }
+
+  .cream-close .cta-sub {
+    font-size: 9px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 190px;
+  }
+
+  .cream-close .cta-btn {
+    background: transparent;
+    color: var(--green);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 7px 16px;
+    border-radius: 3px;
+    border: 1px solid rgba(204,255,0,0.4);
+    display: inline-block;
+    margin-bottom: 18px;
+  }
+
+  .cream-close .handle {
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--dim);
+    letter-spacing: 1.5px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 200px;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .legend-item p {
+    font-size: 10px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+
+  .legend-item strong {
+    color: var(--gray);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  /* divider between versions */
+  .version-divider {
+    border: none;
+    border-top: 1px solid #1a1a1a;
+    margin: 56px 0 48px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>LUMMA — CAROUSEL TEMPLATES</h1>
+  <p>Sistema de carruseles educativos · Versión oscura + crema · Abril 2026</p>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     VERSIÓN OSCURA
+══════════════════════════════════════ -->
+<div class="section-block">
+  <div class="version-label">VERSIÓN <span>OSCURA</span> — Fondo negro · Tono experto · Posicionamiento e insights</div>
+
+  <div class="slides-row">
+
+    <!-- PORTADA OSCURA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">PORTADA</span>
+      <div class="slide dark-cover">
+        <div class="noise"></div>
+        <div class="glow-tl"></div>
+        <div class="glow-br"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="category-tag">CONTENIDO</span>
+            <span class="slide-num">1 / 6</span>
+          </div>
+          <div class="headline">
+            <h2>Graba un mes<br>de contenido<br>en <em>un día</em></h2>
+            <p class="sub">El sistema que usamos con nuestros clientes para producir más sin perder calidad.</p>
+          </div>
+          <div class="bottom-row">
+            <div class="swipe-hint">
+              <span>DESLIZA</span>
+              <div class="arrow"></div>
+            </div>
+            <div class="logo-mark">
+              <svg class="iso" viewBox="0 0 32 32">
+                <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+                <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+                <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+              </svg>
+              <span>LUMMA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERIOR OSCURO -->
+    <div class="slide-wrap">
+      <span class="slide-tag">SLIDE INTERIOR</span>
+      <div class="slide dark-inner">
+        <div class="noise"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="step-num">01 —</span>
+            <span class="slide-num">2 / 6</span>
+          </div>
+          <span class="tip-label">EL PRIMER PASO</span>
+          <p class="tip-title">Define tu<br><em>banco de temas</em><br>antes de grabar</p>
+          <p class="tip-body">Sin esto, el día de contenido se convierte en improvisación. Con 10 temas claros y aprobados, el día fluye sin fricción.</p>
+          <div class="card-block">
+            <p>"El contenido que funciona no se improvisa. Se diseña antes de encender la cámara."</p>
+          </div>
+          <div class="bottom-logo">
+            <svg width="12" height="12" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIERRE OSCURO -->
+    <div class="slide-wrap">
+      <span class="slide-tag">CIERRE / CTA</span>
+      <div class="slide dark-close">
+        <div class="noise"></div>
+        <div class="glow-center"></div>
+        <div class="content">
+          <div class="isotipo">
+            <svg width="44" height="26" viewBox="0 0 44 26">
+              <circle cx="13" cy="13" r="12" fill="#CCFF00"/>
+              <circle cx="31" cy="13" r="12" fill="#E6007E"/>
+              <circle cx="22" cy="13" r="5" fill="#080808"/>
+            </svg>
+          </div>
+          <h2 class="cta-headline">¿Lo co-creamos<br><em>contigo?</em></h2>
+          <p class="cta-sub">Diseñamos el sistema de contenido para que tu marca brille cada mes sin que tú tengas que reinventar.</p>
+          <span class="cta-btn">CONVERSEMOS →</span>
+          <span class="handle">@lummastudio_</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="version-divider">
+
+<!-- ══════════════════════════════════════
+     VERSIÓN CREMA
+══════════════════════════════════════ -->
+<div class="section-block">
+  <div class="version-label">VERSIÓN <span style="color:#E6007E">CREMA</span> — Fondo cálido · Tono educativo · Tips y procesos</div>
+
+  <div class="slides-row">
+
+    <!-- PORTADA CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">PORTADA</span>
+      <div class="slide cream-cover">
+        <div class="texture"></div>
+        <div class="corner-accent"></div>
+        <div class="corner-accent-inner"></div>
+        <div class="content">
+          <div class="top-row">
+            <div>
+              <span class="category-tag">BRANDING</span>
+            </div>
+            <span class="slide-num">1 / 5</span>
+          </div>
+          <div class="headline">
+            <h2>5 señales de que tu marca necesita <em>una historia</em></h2>
+            <span class="highlight-box">GUÍA PRÁCTICA</span>
+            <p class="sub">Para empresas que quieren conectar, no solo aparecer.</p>
+          </div>
+          <div class="bottom-row">
+            <div class="swipe-hint">
+              <span>DESLIZA</span>
+              <div class="swipe-arrow"></div>
+            </div>
+            <div class="logo-mark">
+              <svg width="14" height="14" viewBox="0 0 32 32">
+                <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+                <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+                <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+              </svg>
+              <span>LUMMA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERIOR CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">SLIDE INTERIOR</span>
+      <div class="slide cream-inner">
+        <div class="texture"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="step-pill">SEÑAL 01</span>
+            <span class="slide-num">2 / 5</span>
+          </div>
+          <p class="tip-title">Tu contenido<br>se ve bien pero<br><em>no conecta</em></p>
+          <p class="tip-body">Cuando la estética está pero la narrativa falta, la gente pasa de largo. El diseño atrae. La historia retiene. Sin una, el otro trabaja de más.</p>
+          <div class="card-block">
+            <p><span>Lo que necesitas:</span> Una narrativa de marca clara que dé contexto a cada pieza que publicas.</p>
+          </div>
+          <div class="bottom-logo">
+            <svg width="12" height="12" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIERRE CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">CIERRE / CTA</span>
+      <div class="slide cream-close">
+        <div class="glow-top"></div>
+        <div class="content">
+          <div class="isotipo">
+            <svg width="44" height="26" viewBox="0 0 44 26">
+              <circle cx="13" cy="13" r="12" fill="#CCFF00"/>
+              <circle cx="31" cy="13" r="12" fill="#E6007E"/>
+              <circle cx="22" cy="13" r="5" fill="#1C1A18"/>
+            </svg>
+          </div>
+          <h2 class="cta-headline">Tu marca tiene<br><em>algo que decir.</em><br>Digámoslo juntos.</h2>
+          <p class="cta-sub">Branding + contenido estratégico para empresas que quieren crecer con intención.</p>
+          <span class="cta-btn">ESCRÍBENOS →</span>
+          <span class="handle">@lummastudio_</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── LEGEND ── -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#CCFF00"></div>
+    <div>
+      <strong>SISTEMA TIPOGRÁFICO</strong>
+      <p>Titulares en Plus Jakarta Sans ExtraBold. Palabras clave en Instrument Serif Italic en verde o rosa.</p>
+    </div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#E6007E"></div>
+    <div>
+      <strong>CUÁNDO USAR CADA VERSIÓN</strong>
+      <p>Negro para insights y posicionamiento. Crema para tips, guías y contenido educativo cercano.</p>
+    </div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#F5F0E8"></div>
+    <div>
+      <strong>ESTRUCTURA FIJA</strong>
+      <p>Portada → 3 a 5 slides de contenido → slide de cierre con CTA. El logo aparece en todas.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

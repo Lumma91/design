@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumma — Posts Estáticos · 3 Opciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #CCFF00;
+    --pink: #E6007E;
+    --black: #080808;
+    --surface: #111111;
+    --dim: #444444;
+    --gray: #777777;
+    --text-light: #D4D0CA;
+    --white: #FFFFFF;
+    --warm: #1C1A18;
+  }
+
+  body {
+    background: #0a0a0a;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 48px 24px 80px;
+  }
+
+  .page-header {
+    text-align: center; margin-bottom: 14px;
+  }
+  .page-header h1 {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px;
+    color: var(--green); margin-bottom: 6px;
+  }
+  .page-header p { font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+
+  .meta-row {
+    display: flex; justify-content: center; gap: 20px;
+    margin-bottom: 52px; flex-wrap: wrap;
+  }
+  .meta-item {
+    font-size: 9px; color: var(--dim); letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .meta-item span { color: var(--gray); }
+
+  .options-row {
+    display: flex; gap: 32px;
+    justify-content: center; flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .option-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+
+  .option-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--dim); text-align: center;
+  }
+  .option-label em { color: var(--green); font-style: normal; }
+  .option-label span {
+    display: block; font-size: 8px; color: #333;
+    letter-spacing: 1px; margin-top: 3px; font-weight: 400;
+  }
+
+  /* 4:5 — 260×325px */
+  .post {
+    width: 260px; height: 325px;
+    position: relative; overflow: hidden;
+    flex-shrink: 0; border-radius: 2px;
+  }
+
+  /* Shared noise */
+  .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.032'/%3E%3C/svg%3E");
+    opacity: 0.55; pointer-events: none; z-index: 1;
+  }
+
+  .logo-sig {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .logo-sig span {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2px; color: var(--dim);
+  }
+
+  /* ══════════════════════
+     OPCIÓN A — TIPOGRAFÍA PURA
+  ══════════════════════ */
+  .opt-a { background: var(--black); }
+
+  .opt-a .glow-g {
+    position: absolute; top: -50px; left: -50px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(204,255,0,0.07) 0%, transparent 60%);
+    filter: blur(32px); z-index: 1; pointer-events: none;
+  }
+
+  .opt-a .glow-p {
+    position: absolute; bottom: -40px; right: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(230,0,126,0.06) 0%, transparent 60%);
+    filter: blur(28px); z-index: 1; pointer-events: none;
+  }
+
+  /* left accent */
+  .opt-a::before {
+    content: '';
+    position: absolute; left: 0; top: 18%; bottom: 18%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--green) 35%, var(--green) 65%, transparent);
+    z-index: 4; opacity: 0.55;
+  }
+
+  .opt-a .content {
+    position: relative; z-index: 2;
+    padding: 30px 28px 26px 30px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .opt-a .top {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .opt-a .pilar {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--green); border-bottom: 1px solid rgba(204,255,0,0.25);
+    padding-bottom: 3px;
+  }
+
+  .opt-a .middle {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 20px 0 12px;
+  }
+
+  /* Main story text */
+  .opt-a .story {
+    font-size: 13.5px; font-weight: 400;
+    color: var(--text-light); line-height: 1.75;
+    letter-spacing: 0.1px;
+  }
+
+  .opt-a .story .serif-word {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green); font-size: 16px;
+  }
+
+  .opt-a .story .serif-word-pink {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--pink); font-size: 16px;
+  }
+
+  .opt-a .story strong {
+    color: var(--white); font-weight: 700;
+    font-size: 12px; display: block;
+    margin-top: 14px; letter-spacing: 0.5px;
+  }
+
+  .opt-a .en-close {
+    display: block; margin-top: 14px;
+    font-size: 11px; font-weight: 500;
+    color: var(--gray); font-style: italic;
+    font-family: 'Instrument Serif', serif;
+    letter-spacing: 0.3px;
+  }
+
+  .opt-a .bottom {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .opt-a .handle {
+    font-size: 7.5px; font-weight: 600; letter-spacing: 1.5px; color: var(--dim);
+  }
+
+
+  /* ══════════════════════
+     OPCIÓN B — FOTO + OVERLAY
+  ══════════════════════ */
+  .opt-b { background: #0c0a08; }
+
+  /* Simulated warm photo atmosphere */
+  .opt-b .photo-sim {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 30%, rgba(180,120,40,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 20% 70%, rgba(80,60,20,0.12) 0%, transparent 50%),
+      linear-gradient(170deg, #1a1208 0%, #0a0806 60%, #080808 100%);
+    z-index: 1;
+  }
+
+  /* Gradient overlay — text lives at bottom */
+  .opt-b .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(8,8,8,0.15) 0%,
+      rgba(8,8,8,0.05) 25%,
+      rgba(8,8,8,0.6) 55%,
+      rgba(8,8,8,0.95) 85%,
+      rgba(8,8,8,1) 100%
+    );
+    z-index: 2;
+  }
+
+  .opt-b .grain {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    opacity: 0.7; z-index: 3; pointer-events: none;
+  }
+
+  /* Photo placeholder hint */
+  .opt-b .photo-hint {
+    position: absolute;
+    top: 22%; left: 50%; transform: translateX(-50%);
+    font-size: 7px; font-weight: 600; letter-spacing: 2px;
+    color: rgba(255,255,255,0.08); z-index: 3;
+    white-space: nowrap; pointer-events: none;
+  }
+
+  .opt-b .content {
+    position: relative; z-index: 4;
+    padding: 22px 26px 24px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .opt-b .top {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .opt-b .pilar {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: rgba(204,255,0,0.6);
+  }
+
+  /* Story anchored to bottom */
+  .opt-b .middle {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: flex-end; padding-bottom: 6px;
+  }
+
+  .opt-b .story {
+    font-size: 13px; font-weight: 400;
+    color: var(--text-light); line-height: 1.75;
+  }
+
+  .opt-b .story .serif-word {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green); font-size: 15.5px;
+  }
+
+  .opt-b .story strong {
+    color: var(--white); font-weight: 700;
+    display: block; margin-top: 12px; font-size: 12px;
+  }
+
+  .opt-b .en-close {
+    display: block; margin-top: 10px;
+    font-size: 10.5px; font-weight: 500;
+    color: var(--gray); font-style: italic;
+    font-family: 'Instrument Serif', serif;
+  }
+
+  .opt-b .bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 14px;
+  }
+
+  .opt-b .handle {
+    font-size: 7.5px; font-weight: 600; letter-spacing: 1.5px; color: var(--dim);
+  }
+
+
+  /* ══════════════════════
+     OPCIÓN C — ELEMENTO GRÁFICO
+  ══════════════════════ */
+  .opt-c { background: var(--black); }
+
+  /* Large quote mark as graphic element */
+  .opt-c .quote-mark {
+    position: absolute;
+    top: 18px; left: 22px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 120px; line-height: 1;
+    color: rgba(204,255,0,0.04);
+    z-index: 1; pointer-events: none;
+    font-style: italic;
+    user-select: none;
+  }
+
+  /* Horizontal lines framing */
+  .opt-c .line-top {
+    position: absolute; top: 48px; left: 28px; right: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--green) 0%, transparent 100%);
+    opacity: 0.25; z-index: 3;
+  }
+
+  .opt-c .line-bottom {
+    position: absolute; bottom: 44px; left: 28px; right: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--pink) 100%);
+    opacity: 0.25; z-index: 3;
+  }
+
+  /* Green dot */
+  .opt-c .dot-g {
+    position: absolute; top: 42px; left: 25px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); z-index: 4;
+    box-shadow: 0 0 10px 3px rgba(204,255,0,0.35);
+  }
+
+  /* Pink dot */
+  .opt-c .dot-p {
+    position: absolute; bottom: 38px; right: 25px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--pink); z-index: 4;
+    box-shadow: 0 0 10px 3px rgba(230,0,126,0.3);
+  }
+
+  .opt-c .content {
+    position: relative; z-index: 2;
+    padding: 30px 28px 22px 30px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .opt-c .top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px;
+  }
+
+  .opt-c .pilar {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--green);
+  }
+
+  .opt-c .date {
+    font-size: 7px; color: #222; letter-spacing: 1.5px;
+  }
+
+  .opt-c .middle {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 10px 0 12px;
+  }
+
+  .opt-c .story {
+    font-size: 13.5px; font-weight: 400;
+    color: var(--text-light); line-height: 1.75;
+  }
+
+  .opt-c .story .serif-word {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green); font-size: 16px;
+  }
+
+  .opt-c .story strong {
+    color: var(--white); font-weight: 700;
+    display: block; margin-top: 14px; font-size: 12px;
+  }
+
+  .opt-c .en-close {
+    display: block; margin-top: 10px;
+    font-size: 11px; color: var(--gray);
+    font-style: italic; font-family: 'Instrument Serif', serif;
+  }
+
+  .opt-c .bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 10px;
+  }
+
+  .opt-c .handle {
+    font-size: 7.5px; font-weight: 600; letter-spacing: 1.5px; color: var(--dim);
+  }
+
+
+  /* ── NOTES ── */
+  .notes-row {
+    display: flex; gap: 32px;
+    justify-content: center; flex-wrap: wrap;
+    margin-top: 48px;
+    max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+
+  .note-card {
+    width: 260px; padding: 18px 20px;
+    border: 1px solid #181818; border-radius: 4px;
+  }
+
+  .note-card strong {
+    display: block; font-size: 8px; font-weight: 700;
+    letter-spacing: 2px; color: var(--green); margin-bottom: 10px;
+  }
+
+  .note-card p {
+    font-size: 9.5px; color: var(--dim); line-height: 1.7;
+  }
+
+  .note-card .best-for {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid #181818;
+  }
+
+  .note-card .best-for strong {
+    font-size: 7px; letter-spacing: 1.5px; margin-bottom: 5px;
+    color: var(--gray);
+  }
+
+  .note-card .best-for p {
+    font-size: 9px; color: #333;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>LUMMA · POSTS ESTÁTICOS · 3 OPCIONES</h1>
+  <p>Pilar LUZ · Storytelling · Viernes 9 de mayo · Formato 4:5</p>
+</div>
+
+<div class="meta-row">
+  <div class="meta-item">COPY <span>"El poder de contar tu historia"</span></div>
+  <div class="meta-item">SENSACIÓN <span>Editorial · Espacio · Respiración</span></div>
+</div>
+
+<div class="options-row">
+
+  <!-- ══ OPCIÓN A ══ -->
+  <div class="option-wrap">
+    <div class="option-label">
+      <em>OPCIÓN A</em>
+      <span>Tipografía pura</span>
+    </div>
+    <div class="post opt-a">
+      <div class="noise"></div>
+      <div class="glow-g"></div>
+      <div class="glow-p"></div>
+      <div class="content">
+        <div class="top">
+          <span class="pilar">LUZ</span>
+          <div class="logo-sig">
+            <svg width="13" height="13" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+        <div class="middle">
+          <p class="story">
+            Detrás de cada marca hay una historia que alguien necesita escuchar.<br><br>
+            La persona que dejó todo para empezar de <span class="serif-word">cero.</span><br>
+            La familia que convirtió una receta en un restaurante.<br>
+            El profesional que decidió construir algo <span class="serif-word-pink">propio.</span><br><br>
+            Cuando cuentas esa historia, dejas de ser una opción más.
+            <strong>Te conviertes en la opción que significa algo.</strong>
+            <span class="en-close">That's the power of storytelling.</span>
+          </p>
+        </div>
+        <div class="bottom">
+          <span class="handle">@lummastudio_</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPCIÓN B ══ -->
+  <div class="option-wrap">
+    <div class="option-label">
+      <em>OPCIÓN B</em>
+      <span>Fotografía + overlay</span>
+    </div>
+    <div class="post opt-b">
+      <div class="photo-sim"></div>
+      <div class="overlay"></div>
+      <div class="grain"></div>
+      <div class="photo-hint">FOTO DE AMBIENTE</div>
+      <div class="content">
+        <div class="top">
+          <span class="pilar">LUZ</span>
+          <div class="logo-sig">
+            <svg width="13" height="13" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00" opacity="0.65"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E" opacity="0.65"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+          </div>
+        </div>
+        <div class="middle">
+          <p class="story">
+            Detrás de cada marca hay una historia que alguien necesita escuchar.<br><br>
+            La persona que dejó todo para empezar de <span class="serif-word">cero.</span><br>
+            La familia. El profesional. El que apostó por lo suyo.<br><br>
+            Cuando cuentas esa historia, dejas de ser una opción más.
+            <strong>Te conviertes en la opción que significa algo.</strong>
+            <span class="en-close">That's the power of storytelling.</span>
+          </p>
+        </div>
+        <div class="bottom">
+          <span class="handle">@lummastudio_</span>
+          <div class="logo-sig">
+            <svg width="11" height="11" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00" opacity="0.5"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E" opacity="0.5"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPCIÓN C ══ -->
+  <div class="option-wrap">
+    <div class="option-label">
+      <em>OPCIÓN C</em>
+      <span>Elemento gráfico</span>
+    </div>
+    <div class="post opt-c">
+      <div class="noise"></div>
+      <div class="quote-mark">"</div>
+      <div class="line-top"></div>
+      <div class="dot-g"></div>
+      <div class="line-bottom"></div>
+      <div class="dot-p"></div>
+      <div class="content">
+        <div class="top">
+          <span class="pilar">LUZ</span>
+          <span class="date">09.05.26</span>
+        </div>
+        <div class="middle">
+          <p class="story">
+            Detrás de cada marca hay una historia que alguien necesita escuchar.<br><br>
+            La persona que dejó todo para empezar de <span class="serif-word">cero.</span><br>
+            La familia que convirtió una receta en un restaurante.<br>
+            El profesional que decidió construir algo <span class="serif-word">propio.</span><br><br>
+            Cuando cuentas esa historia, dejas de ser una opción más.
+            <strong>Te conviertes en la que significa algo.</strong>
+            <span class="en-close">That's the power of storytelling.</span>
+          </p>
+        </div>
+        <div class="bottom">
+          <span class="handle">@lummastudio_</span>
+          <div class="logo-sig">
+            <svg width="11" height="11" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NOTES -->
+<div class="notes-row">
+
+  <div class="note-card">
+    <strong>OPCIÓN A — TIPOGRAFÍA PURA</strong>
+    <p>El copy es el protagonista absoluto. Máximo espacio negativo, mínimos elementos visuales. La palabra en serif hace todo el trabajo de énfasis. No depende de ningún asset externo.</p>
+    <div class="best-for">
+      <strong>MEJOR PARA</strong>
+      <p>Storytelling puro, reflexiones de marca, frases de posicionamiento. Cuando el texto tiene suficiente peso para sostenerse solo.</p>
+    </div>
+  </div>
+
+  <div class="note-card">
+    <strong>OPCIÓN B — FOTOGRAFÍA</strong>
+    <p>El texto vive sobre imagen. El overlay oscuro garantiza legibilidad. La foto aporta contexto emocional y calidez sin robarle protagonismo al copy. Requiere una imagen de calidad.</p>
+    <div class="best-for">
+      <strong>MEJOR PARA</strong>
+      <p>Historias reales de clientes, behind the scenes, casos de éxito. Cuando tienes una imagen que refuerza el contexto del mensaje.</p>
+    </div>
+  </div>
+
+  <div class="note-card">
+    <strong>OPCIÓN C — ELEMENTO GRÁFICO</strong>
+    <p>La comilla grande en serif actúa como textura de fondo. Las líneas y puntos verde/rosa enmarcan sin competir. Más presencia gráfica, mismo espacio para el copy.</p>
+    <div class="best-for">
+      <strong>MEJOR PARA</strong>
+      <p>Posts de cita, frases de impacto, momentos donde quieres que la identidad visual tenga más presencia sin usar fotografía.</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

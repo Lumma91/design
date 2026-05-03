@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumma — Carousel Templates 4:5</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #CCFF00;
+    --pink: #E6007E;
+    --black: #080808;
+    --surface: #111111;
+    --card: #161616;
+    --dim: #444444;
+    --gray: #777777;
+    --text-light: #D4D0CA;
+    --white: #FFFFFF;
+    --cream: #F5F0E8;
+    --warm: #1C1A18;
+    --rose: #FF7EB3;
+  }
+
+  body {
+    background: #0c0c0c;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 48px 24px 80px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .page-header h1 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 1px;
+  }
+
+  .version-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .version-label span { color: var(--green); }
+  .version-label span.pink { color: var(--pink); }
+
+  .slides-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .slide-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slide-tag {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--dim);
+  }
+
+  .section-block { margin-bottom: 72px; }
+
+  .version-divider {
+    border: none;
+    border-top: 1px solid #1a1a1a;
+    margin: 64px 0 56px;
+  }
+
+  /* ── 4:5 SLIDE — 260 × 325px display ── */
+  .slide {
+    width: 260px;
+    height: 325px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+
+
+  /* ════════════════════════════════
+     DARK VERSION
+  ════════════════════════════════ */
+
+  /* DARK COVER */
+  .dark-cover { background: var(--black); }
+
+  .dark-cover::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 15%; bottom: 15%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--green) 40%, var(--green) 60%, transparent);
+    z-index: 4;
+    opacity: 0.8;
+  }
+
+  .dark-cover .glow-tl {
+    position: absolute;
+    top: -50px; left: -50px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(204,255,0,0.13) 0%, transparent 60%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+
+  .dark-cover .glow-br {
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(230,0,126,0.10) 0%, transparent 60%);
+    filter: blur(24px);
+    pointer-events: none;
+  }
+
+  .dark-cover .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none;
+  }
+
+  .dark-cover .content {
+    position: relative; z-index: 2;
+    padding: 26px 26px 22px 28px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .dark-cover .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .dark-cover .cat-tag {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--green);
+    background: rgba(204,255,0,0.07);
+    border: 1px solid rgba(204,255,0,0.18);
+    padding: 4px 9px; border-radius: 2px;
+  }
+
+  .dark-cover .num {
+    font-size: 8px; color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dark-cover .middle {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 18px 0 10px;
+  }
+
+  .dark-cover .eyebrow {
+    font-size: 8px; font-weight: 600; letter-spacing: 2px;
+    color: var(--gray); margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .dark-cover h2 {
+    font-size: 32px; font-weight: 800;
+    line-height: 1.02; letter-spacing: -0.8px;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .dark-cover h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-cover .sub {
+    font-size: 10px; font-weight: 500;
+    color: var(--gray); line-height: 1.55;
+    max-width: 200px;
+  }
+
+  .dark-cover .bottom-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+
+  .dark-cover .swipe {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 7.5px; font-weight: 600; letter-spacing: 1.5px;
+    color: var(--dim);
+  }
+
+  .dark-cover .swipe-line {
+    width: 18px; height: 1px; background: var(--green);
+    position: relative;
+  }
+  .dark-cover .swipe-line::after {
+    content: '';
+    position: absolute; right: 0; top: -2.5px;
+    width: 5px; height: 5px;
+    border-top: 1px solid var(--green);
+    border-right: 1px solid var(--green);
+    transform: rotate(45deg);
+  }
+
+  .logo-inline {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .logo-inline span {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--dim);
+  }
+
+
+  /* DARK INNER */
+  .dark-inner { background: var(--black); }
+
+  .dark-inner .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none;
+  }
+
+  /* Subtle top bar accent */
+  .dark-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 26px; right: 26px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(204,255,0,0.25), transparent);
+    z-index: 3;
+  }
+
+  .dark-inner .content {
+    position: relative; z-index: 2;
+    padding: 26px 26px 22px;
+    height: 100%;
+    display: flex; flex-direction: column;
+  }
+
+  .dark-inner .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .dark-inner .step {
+    font-size: 8px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--green);
+  }
+
+  .dark-inner .num { font-size: 8px; color: var(--dim); }
+
+  .dark-inner .label {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: rgba(204,255,0,0.5); text-transform: uppercase;
+    margin-bottom: 9px; display: block;
+  }
+
+  .dark-inner h3 {
+    font-size: 22px; font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.4px;
+    color: var(--white); margin-bottom: 14px;
+  }
+
+  .dark-inner h3 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-inner .body {
+    font-size: 10px; font-weight: 500;
+    color: var(--text-light); line-height: 1.65;
+    flex: 1;
+  }
+
+  .dark-inner .insight {
+    background: var(--surface);
+    border-left: 2px solid var(--green);
+    padding: 11px 13px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 16px;
+  }
+
+  .dark-inner .insight p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 10px; color: var(--text-light); line-height: 1.5;
+  }
+
+  .dark-inner .insight p em {
+    color: var(--green); font-style: normal; font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 9px;
+  }
+
+  .dark-inner .bottom-logo {
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .dark-inner .bottom-logo span {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2px; color: var(--dim);
+  }
+
+
+  /* DARK CLOSE */
+  .dark-close { background: var(--black); }
+
+  .dark-close .glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px; height: 280px;
+    background: radial-gradient(circle,
+      rgba(204,255,0,0.07) 0%,
+      rgba(230,0,126,0.05) 40%,
+      transparent 70%);
+    filter: blur(28px); pointer-events: none;
+  }
+
+  .dark-close .noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none;
+  }
+
+  .dark-close::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 15%; bottom: 15%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--pink) 40%, var(--pink) 60%, transparent);
+    z-index: 4; opacity: 0.7;
+  }
+
+  .dark-close .content {
+    position: relative; z-index: 2;
+    padding: 26px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 0;
+  }
+
+  .dark-close .iso { margin-bottom: 20px; }
+
+  .dark-close h2 {
+    font-size: 22px; font-weight: 800;
+    color: var(--white); line-height: 1.1;
+    letter-spacing: -0.4px; margin-bottom: 10px;
+  }
+
+  .dark-close h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green);
+  }
+
+  .dark-close .sub {
+    font-size: 10px; color: var(--gray);
+    line-height: 1.6; margin-bottom: 20px;
+    max-width: 200px;
+  }
+
+  .dark-close .btn {
+    background: var(--green); color: var(--black);
+    font-size: 8px; font-weight: 800; letter-spacing: 2px;
+    padding: 9px 18px; border-radius: 2px;
+    display: inline-block; margin-bottom: 20px;
+  }
+
+  .dark-close .handle {
+    font-size: 8px; font-weight: 600;
+    color: var(--dim); letter-spacing: 1.5px;
+  }
+
+
+  /* ════════════════════════════════
+     CREAM VERSION
+  ════════════════════════════════ */
+
+  /* CREAM COVER */
+  .cream-cover { background: var(--cream); }
+
+  .cream-cover .tex {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    opacity: 0.6; pointer-events: none;
+  }
+
+  /* Bottom pink band */
+  .cream-cover .band {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--pink) 100%);
+  }
+
+  /* Top right geometric accent */
+  .cream-cover .geo {
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 68px 68px 0;
+    border-color: transparent var(--pink) transparent transparent;
+    z-index: 1;
+  }
+  .cream-cover .geo2 {
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 46px 46px 0;
+    border-color: transparent var(--green) transparent transparent;
+    z-index: 2;
+  }
+
+  .cream-cover .content {
+    position: relative; z-index: 3;
+    padding: 26px 26px 22px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .cream-cover .top-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+
+  .cream-cover .cat-tag {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--pink);
+    border-bottom: 1.5px solid var(--pink);
+    padding-bottom: 3px;
+    text-transform: uppercase;
+  }
+
+  .cream-cover .num { font-size: 8px; color: #AAAAAA; margin-top: 2px; }
+
+  .cream-cover .middle {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 14px 0 8px;
+  }
+
+  .cream-cover h2 {
+    font-size: 30px; font-weight: 800;
+    line-height: 1.02; letter-spacing: -0.8px;
+    color: var(--warm); margin-bottom: 12px;
+  }
+
+  .cream-cover h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--pink);
+  }
+
+  .cream-cover .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--warm); color: var(--green);
+    font-size: 7.5px; font-weight: 800; letter-spacing: 1.5px;
+    padding: 5px 10px; border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  .cream-cover .sub {
+    font-size: 10px; font-weight: 500;
+    color: #888; line-height: 1.55;
+  }
+
+  .cream-cover .bottom-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+
+  .cream-cover .swipe {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 7.5px; font-weight: 600; letter-spacing: 1.5px; color: #AAA;
+  }
+
+  .cream-cover .swipe-line {
+    width: 18px; height: 1px; background: var(--pink); position: relative;
+  }
+  .cream-cover .swipe-line::after {
+    content: '';
+    position: absolute; right: 0; top: -2.5px;
+    width: 5px; height: 5px;
+    border-top: 1px solid var(--pink);
+    border-right: 1px solid var(--pink);
+    transform: rotate(45deg);
+  }
+
+  .cream-logo span { color: #AAAAAA !important; }
+
+
+  /* CREAM INNER */
+  .cream-inner { background: var(--cream); }
+
+  .cream-inner .tex {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    opacity: 0.6; pointer-events: none;
+  }
+
+  .cream-inner .band {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--pink) 100%);
+  }
+
+  .cream-inner .content {
+    position: relative; z-index: 2;
+    padding: 26px 26px 28px;
+    height: 100%;
+    display: flex; flex-direction: column;
+  }
+
+  .cream-inner .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .cream-inner .step-pill {
+    background: var(--warm); color: var(--green);
+    font-size: 7.5px; font-weight: 800; letter-spacing: 1.5px;
+    padding: 4px 9px; border-radius: 20px;
+  }
+
+  .cream-inner .num { font-size: 8px; color: #AAAAAA; }
+
+  .cream-inner h3 {
+    font-size: 21px; font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.4px;
+    color: var(--warm); margin-bottom: 12px;
+  }
+
+  .cream-inner h3 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--pink);
+  }
+
+  .cream-inner .body {
+    font-size: 10px; font-weight: 500;
+    color: #555; line-height: 1.65; flex: 1;
+  }
+
+  .cream-inner .insight {
+    background: var(--warm);
+    padding: 12px 14px; border-radius: 8px;
+    margin-top: 16px;
+  }
+
+  .cream-inner .insight p {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 10px; color: var(--text-light); line-height: 1.5;
+  }
+
+  .cream-inner .insight p strong {
+    color: var(--green); font-style: normal;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 8px; font-weight: 700; letter-spacing: 1px;
+    display: block; margin-bottom: 3px;
+  }
+
+  .cream-inner .bottom-logo {
+    margin-top: 14px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .cream-inner .bottom-logo span {
+    font-size: 7.5px; font-weight: 700; letter-spacing: 2px; color: #AAAAAA;
+  }
+
+
+  /* CREAM CLOSE */
+  .cream-close { background: var(--warm); }
+
+  .cream-close .glow {
+    position: absolute;
+    top: -40px; left: 50%; transform: translateX(-50%);
+    width: 280px; height: 200px;
+    background: radial-gradient(ellipse, rgba(204,255,0,0.1) 0%, transparent 65%);
+    filter: blur(24px); pointer-events: none;
+  }
+
+  .cream-close .band {
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--pink));
+  }
+
+  .cream-close .content {
+    position: relative; z-index: 2;
+    padding: 26px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+
+  .cream-close .iso { margin-bottom: 18px; }
+
+  .cream-close h2 {
+    font-size: 20px; font-weight: 800;
+    color: var(--white); line-height: 1.1;
+    letter-spacing: -0.3px; margin-bottom: 10px;
+  }
+
+  .cream-close h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+    color: var(--green);
+  }
+
+  .cream-close .sub {
+    font-size: 10px; color: var(--gray);
+    line-height: 1.6; margin-bottom: 20px;
+    max-width: 190px;
+  }
+
+  .cream-close .btn {
+    background: transparent; color: var(--green);
+    font-size: 8px; font-weight: 800; letter-spacing: 2px;
+    padding: 8px 18px; border-radius: 2px;
+    border: 1px solid rgba(204,255,0,0.35);
+    display: inline-block; margin-bottom: 18px;
+  }
+
+  .cream-close .handle {
+    font-size: 8px; font-weight: 600;
+    color: var(--dim); letter-spacing: 1.5px;
+  }
+
+  /* ── SPEC NOTE ── */
+  .spec-note {
+    text-align: center;
+    margin-top: 56px;
+    padding: 20px;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .spec-note p {
+    font-size: 9px; color: var(--dim); line-height: 1.7; letter-spacing: 0.5px;
+  }
+  .spec-note strong { color: var(--gray); font-size: 8px; letter-spacing: 2px; display: block; margin-bottom: 8px; }
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>LUMMA — CAROUSEL TEMPLATES · 4:5</h1>
+  <p>1080 × 1350 px · Sistema educativo · Versión oscura + crema · Abril 2026</p>
+</div>
+
+
+<!-- ══════ DARK VERSION ══════ -->
+<div class="section-block">
+  <div class="version-label">VERSIÓN <span>OSCURA</span> — Insights · Posicionamiento · Datos de industria</div>
+
+  <div class="slides-row">
+
+    <!-- PORTADA OSCURA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">PORTADA</span>
+      <div class="slide dark-cover">
+        <div class="noise"></div>
+        <div class="glow-tl"></div>
+        <div class="glow-br"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="cat-tag">CONTENIDO</span>
+            <span class="num">1 / 6</span>
+          </div>
+          <div class="middle">
+            <p class="eyebrow">EL SISTEMA QUE USAMOS</p>
+            <h2>Graba un mes<br>de contenido<br>en <em>un día</em></h2>
+            <p class="sub">Paso a paso para producir más sin perder calidad ni tu cordura.</p>
+          </div>
+          <div class="bottom-row">
+            <div class="swipe">
+              <span>DESLIZA</span>
+              <div class="swipe-line"></div>
+            </div>
+            <div class="logo-inline">
+              <svg width="14" height="14" viewBox="0 0 32 32">
+                <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+                <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+                <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+              </svg>
+              <span>LUMMA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERIOR OSCURO -->
+    <div class="slide-wrap">
+      <span class="slide-tag">SLIDE INTERIOR</span>
+      <div class="slide dark-inner">
+        <div class="noise"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="step">PASO 01</span>
+            <span class="num">2 / 6</span>
+          </div>
+          <span class="label">ANTES DE GRABAR</span>
+          <h3>Define tu banco<br>de temas con<br><em>intención</em></h3>
+          <p class="body">Sin un banco de temas aprobado, el día de contenido se convierte en improvisación cara. Con 10 temas claros, el día fluye, la cámara se enciende y el resultado habla solo.</p>
+          <div class="insight">
+            <p>"La mejor sesión de contenido empieza <em style='color:var(--green);font-style:normal;font-family:sans-serif;font-size:9px'>una semana antes</em> de encender la cámara."</p>
+          </div>
+          <div class="bottom-logo">
+            <svg width="12" height="12" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#080808"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIERRE OSCURO -->
+    <div class="slide-wrap">
+      <span class="slide-tag">CIERRE / CTA</span>
+      <div class="slide dark-close">
+        <div class="noise"></div>
+        <div class="glow"></div>
+        <div class="content">
+          <div class="iso">
+            <svg width="50" height="30" viewBox="0 0 50 30">
+              <circle cx="15" cy="15" r="13" fill="#CCFF00"/>
+              <circle cx="35" cy="15" r="13" fill="#E6007E"/>
+              <circle cx="25" cy="15" r="5.5" fill="#080808"/>
+            </svg>
+          </div>
+          <h2>¿Lo co-creamos<br><em>contigo?</em></h2>
+          <p class="sub">Diseñamos el sistema de contenido para que tu marca brille cada mes sin que tú tengas que reinventarlo.</p>
+          <span class="btn">CONVERSEMOS →</span>
+          <span class="handle">@lummastudio_</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="version-divider">
+
+<!-- ══════ CREAM VERSION ══════ -->
+<div class="section-block">
+  <div class="version-label">VERSIÓN <span class="pink">CREMA</span> — Tips · Guías prácticas · Contenido educativo cercano</div>
+
+  <div class="slides-row">
+
+    <!-- PORTADA CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">PORTADA</span>
+      <div class="slide cream-cover">
+        <div class="tex"></div>
+        <div class="geo"></div>
+        <div class="geo2"></div>
+        <div class="band"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="cat-tag">BRANDING</span>
+            <span class="num">1 / 5</span>
+          </div>
+          <div class="middle">
+            <span class="badge">GUÍA PRÁCTICA</span>
+            <h2>5 señales de que<br>tu marca necesita<br>una <em>historia</em></h2>
+            <p class="sub">Para empresas que quieren conectar, no solo aparecer en el feed.</p>
+          </div>
+          <div class="bottom-row">
+            <div class="swipe">
+              <span>DESLIZA</span>
+              <div class="swipe-line"></div>
+            </div>
+            <div class="logo-inline cream-logo">
+              <svg width="14" height="14" viewBox="0 0 32 32">
+                <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+                <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+                <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+              </svg>
+              <span style="color:#AAAAAA;font-size:7.5px;font-weight:700;letter-spacing:2.5px;">LUMMA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERIOR CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">SLIDE INTERIOR</span>
+      <div class="slide cream-inner">
+        <div class="tex"></div>
+        <div class="band"></div>
+        <div class="content">
+          <div class="top-row">
+            <span class="step-pill">SEÑAL 01</span>
+            <span class="num">2 / 5</span>
+          </div>
+          <h3>Tu contenido<br>se ve bien pero<br><em>no conecta</em></h3>
+          <p class="body">Cuando la estética está pero la narrativa falta, la gente pasa de largo. El diseño atrae. La historia retiene. Sin una narrativa clara, el otro trabaja el doble sin resultados.</p>
+          <div class="insight">
+            <p><strong>LO QUE NECESITAS</strong>Una narrativa de marca que dé contexto a cada pieza que publicas — antes del diseño, no después.</p>
+          </div>
+          <div class="bottom-logo">
+            <svg width="12" height="12" viewBox="0 0 32 32">
+              <circle cx="11" cy="16" r="9" fill="#CCFF00"/>
+              <circle cx="21" cy="16" r="9" fill="#E6007E"/>
+              <circle cx="16" cy="16" r="3.5" fill="#1C1A18"/>
+            </svg>
+            <span>LUMMA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CIERRE CREMA -->
+    <div class="slide-wrap">
+      <span class="slide-tag">CIERRE / CTA</span>
+      <div class="slide cream-close">
+        <div class="glow"></div>
+        <div class="band"></div>
+        <div class="content">
+          <div class="iso">
+            <svg width="50" height="30" viewBox="0 0 50 30">
+              <circle cx="15" cy="15" r="13" fill="#CCFF00"/>
+              <circle cx="35" cy="15" r="13" fill="#E6007E"/>
+              <circle cx="25" cy="15" r="5.5" fill="#1C1A18"/>
+            </svg>
+          </div>
+          <h2>Tu marca tiene<br>algo que decir.<br><em>Digámoslo juntos.</em></h2>
+          <p class="sub">Branding + contenido estratégico para empresas que quieren crecer con intención y con criterio.</p>
+          <span class="btn">ESCRÍBENOS →</span>
+          <span class="handle">@lummastudio_</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SPEC NOTE -->
+<div class="spec-note">
+  <p><strong>ESPECIFICACIONES DE PRODUCCIÓN</strong>
+  Formato: 1080 × 1350 px · Ratio 4:5 · RGB · 72 dpi para digital<br>
+  Tipografía: Plus Jakarta Sans ExtraBold para titulares · Instrument Serif Italic para palabra clave<br>
+  Estructura: Portada → 3 a 5 slides de contenido → Slide de cierre con CTA · Logo en todas las slides<br>
+  Grid en campo: centrado con 80px de padding lateral y 100px superior e inferior
+  </p>
+</div>
+
+</body>
+</html>

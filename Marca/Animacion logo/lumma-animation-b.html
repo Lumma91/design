@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumma — Convergencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080808;
+    --green: #CCFF00;
+    --pink: #E6007E;
+    --white: #FFFFFF;
+    --gray: #555555;
+  }
+
+  body {
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── WORDMARK LAYER ── */
+  .text-layer {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .wordmark {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(42px, 8vw, 72px);
+    letter-spacing: 14px;
+    color: var(--white);
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    text-indent: 14px;
+  }
+
+  .wordmark.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .tagline {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(13px, 2vw, 16px);
+    color: var(--gray);
+    letter-spacing: 3px;
+    margin-top: 14px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    text-indent: 3px;
+  }
+
+  .tagline.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ghost isotipo */
+  .isotipo-ghost {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(-58px);
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    pointer-events: none;
+    z-index: 9;
+  }
+  .isotipo-ghost.visible {
+    opacity: 0.06;
+  }
+
+  /* ── CONTROLS ── */
+  .replay-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: var(--green);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 10px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+    opacity: 0;
+    transition: background 0.2s, border-color 0.2s, opacity 0.4s;
+    z-index: 100;
+  }
+  .replay-btn:hover {
+    background: #1a1a1a;
+    border-color: rgba(204,255,0,0.3);
+  }
+  .replay-btn.visible { opacity: 1; }
+
+  .badge {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: #444;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 8px 14px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 100;
+  }
+  .badge.visible { opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div class="isotipo-ghost" id="isotipoGhost">
+  <svg width="160" height="94" viewBox="0 0 160 94">
+    <circle cx="50" cy="47" r="37" fill="white"/>
+    <circle cx="110" cy="47" r="37" fill="white"/>
+    <circle cx="80" cy="47" r="15" fill="#080808"/>
+  </svg>
+</div>
+
+<div class="text-layer">
+  <div class="wordmark" id="wordmark">LUMMA</div>
+  <div class="tagline" id="tagline">Light your brand.</div>
+</div>
+
+<button class="replay-btn" id="replayBtn" onclick="init()">↺ REPLAY</button>
+<div class="badge" id="badge">4.2s · Convergencia</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H, cx, cy;
+let animFrame;
+let startTime;
+
+// State
+let phase = 'travel'; // travel | collision | settle | fadeout
+let phaseStart = 0;
+
+// Particles
+let gp, pp; // green particle, pink particle
+
+// Flash
+let flashAlpha = 0;
+
+// Fade out
+let fadeAlpha = 0;
+
+// Trails
+const GREEN = '#CCFF00';
+const PINK  = '#E6007E';
+const BG    = '#080808';
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  cx = W / 2;
+  cy = H / 2;
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+
+class Particle {
+  constructor(startX, color, dir) {
+    this.x = startX;
+    this.y = cy;
+    this.targetX = cx;
+    this.color = color;
+    this.dir = dir; // 1 = left to right, -1 = right to left
+    this.trail = [];
+    this.size = 7;
+    this.alive = true;
+  }
+
+  update(progress) {
+    this.x = lerp(this.x === cx ? cx : (this.dir > 0 ? -60 : W + 60), cx, easeInOut(progress));
+    this.y = cy;
+    this.trail.unshift({ x: this.x, y: this.y, a: 1 });
+    if (this.trail.length > 38) this.trail.pop();
+    this.trail.forEach((p, i) => { p.a = 1 - i / this.trail.length; });
+  }
+
+  draw() {
+    // Trail
+    for (let i = this.trail.length - 1; i >= 0; i--) {
+      const p = this.trail[i];
+      const t = 1 - i / this.trail.length;
+      const r = this.size * t * 0.7;
+      ctx.save();
+      ctx.globalAlpha = p.a * 0.45 * t;
+      ctx.shadowBlur = 18 * t;
+      ctx.shadowColor = this.color;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Core particle
+    ctx.save();
+    ctx.shadowBlur = 32;
+    ctx.shadowColor = this.color;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Inner bright core
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * 0.35, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// Ripple rings after collision
+let rings = [];
+
+function spawnRings() {
+  for (let i = 0; i < 4; i++) {
+    rings.push({
+      r: 0,
+      maxR: 80 + i * 55,
+      alpha: 0.6 - i * 0.1,
+      color: i % 2 === 0 ? GREEN : PINK,
+      delay: i * 80,
+      born: performance.now()
+    });
+  }
+}
+
+function drawRings(now) {
+  rings.forEach(ring => {
+    const elapsed = now - ring.born - ring.delay;
+    if (elapsed < 0) return;
+    const t = Math.min(elapsed / 600, 1);
+    const r = easeOut(t) * ring.maxR;
+    const a = ring.alpha * (1 - t);
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.strokeStyle = ring.color;
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = ring.color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+// Ambient glow that persists
+function drawAmbientGlow(alpha) {
+  // Green left
+  const grd1 = ctx.createRadialGradient(cx - 20, cy, 0, cx - 20, cy, 180);
+  grd1.addColorStop(0, `rgba(204,255,0,${0.07 * alpha})`);
+  grd1.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd1;
+  ctx.fillRect(0, 0, W, H);
+
+  // Pink right
+  const grd2 = ctx.createRadialGradient(cx + 20, cy, 0, cx + 20, cy, 180);
+  grd2.addColorStop(0, `rgba(230,0,126,${0.06 * alpha})`);
+  grd2.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd2;
+  ctx.fillRect(0, 0, W, H);
+}
+
+let collisionTime = null;
+let textShown = false;
+let endShown = false;
+
+function init() {
+  cancelAnimationFrame(animFrame);
+
+  // Reset UI
+  document.getElementById('wordmark').classList.remove('visible');
+  document.getElementById('tagline').classList.remove('visible');
+  document.getElementById('isotipoGhost').classList.remove('visible');
+  document.getElementById('replayBtn').classList.remove('visible');
+  document.getElementById('badge').classList.remove('visible');
+
+  resize();
+
+  gp = new Particle(-60, GREEN,  1);
+  gp.x = -60;
+  pp = new Particle(W + 60, PINK, -1);
+  pp.x = W + 60;
+
+  rings = [];
+  flashAlpha = 0;
+  fadeAlpha = 0;
+  phase = 'travel';
+  collisionTime = null;
+  textShown = false;
+  endShown = false;
+
+  startTime = performance.now();
+  loop();
+}
+
+function loop() {
+  animFrame = requestAnimationFrame(loop);
+  const now = performance.now();
+  const elapsed = now - startTime; // ms
+
+  ctx.clearRect(0, 0, W, H);
+
+  // BG
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── PHASE: TRAVEL (0 → 1800ms) ──
+  if (phase === 'travel') {
+    const t = Math.min(elapsed / 1800, 1);
+    drawAmbientGlow(t);
+
+    // move particles
+    const gpX = lerp(-60, cx, easeInOut(t));
+    const ppX = lerp(W + 60, cx, easeInOut(t));
+
+    gp.x = gpX; gp.y = cy;
+    pp.x = ppX; pp.y = cy;
+
+    gp.trail.unshift({ x: gp.x, y: gp.y });
+    if (gp.trail.length > 40) gp.trail.pop();
+    pp.trail.unshift({ x: pp.x, y: pp.y });
+    if (pp.trail.length > 40) pp.trail.pop();
+
+    gp.draw();
+    pp.draw();
+
+    if (t >= 1) {
+      phase = 'collision';
+      collisionTime = now;
+      spawnRings();
+    }
+  }
+
+  // ── PHASE: COLLISION ──
+  else if (phase === 'collision') {
+    const t = (now - collisionTime);
+
+    drawAmbientGlow(1);
+    drawRings(now);
+
+    // Flash
+    if (t < 120) {
+      flashAlpha = easeOut(t / 120) * 0.85;
+    } else {
+      flashAlpha = Math.max(0, 0.85 - easeOut((t - 120) / 300));
+    }
+
+    if (flashAlpha > 0) {
+      ctx.save();
+      ctx.globalAlpha = flashAlpha;
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 220);
+      grad.addColorStop(0, 'rgba(255,255,255,1)');
+      grad.addColorStop(0.3, 'rgba(255,255,255,0.6)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    }
+
+    // Show text when flash starts settling
+    if (t > 180 && !textShown) {
+      textShown = true;
+      document.getElementById('wordmark').classList.add('visible');
+      document.getElementById('isotipoGhost').classList.add('visible');
+      setTimeout(() => {
+        document.getElementById('tagline').classList.add('visible');
+      }, 700);
+    }
+
+    if (t > 1600) {
+      phase = 'settle';
+    }
+  }
+
+  // ── PHASE: SETTLE ──
+  else if (phase === 'settle') {
+    drawAmbientGlow(1);
+    drawRings(now);
+
+    if (!endShown) {
+      endShown = true;
+      // fade out after pause
+      setTimeout(() => { phase = 'fadeout'; }, 900);
+    }
+  }
+
+  // ── PHASE: FADEOUT ──
+  else if (phase === 'fadeout') {
+    drawAmbientGlow(Math.max(0, 1 - fadeAlpha));
+    drawRings(now);
+
+    fadeAlpha = Math.min(fadeAlpha + 0.012, 1);
+    ctx.save();
+    ctx.globalAlpha = fadeAlpha;
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+
+    if (fadeAlpha >= 1) {
+      cancelAnimationFrame(animFrame);
+      document.getElementById('replayBtn').classList.add('visible');
+      document.getElementById('badge').classList.add('visible');
+    }
+  }
+}
+
+window.addEventListener('resize', () => { resize(); });
+window.addEventListener('load', init);
+</script>
+
+</body>
+</html>
